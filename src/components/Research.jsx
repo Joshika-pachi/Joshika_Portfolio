@@ -1,61 +1,83 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import Container from '@mui/material/Container';
-import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
+import './Research.css';
 
-const focusAreas = [
-  { title: 'SegFormer', desc: 'Transformer-based semantic segmentation architectures.' },
-  { title: 'ZoeDepth', desc: 'Monocular depth estimation with robust generalisation.' },
-  { title: 'Spatial Reasoning', desc: 'How models understand layout, depth, and context in images.' },
+const researchSections = [
+  {
+    mod: 'challenge',
+    label: 'Problem',
+    text: 'Standard image models recognise objects but struggle to understand spatial relationships — where things are relative to each other, how deep a scene is, or how layout affects meaning. Most benchmarks do not surface these gaps.',
+  },
+  {
+    mod: 'solution',
+    label: 'Approach',
+    text: 'Explored SegFormer for transformer-based semantic segmentation and ZoeDepth for monocular depth estimation. Both use attention mechanisms that naturally model spatial context rather than treating pixels in isolation.',
+  },
+  {
+    mod: 'impact',
+    label: 'Current Progress',
+    text: 'Ran experiments comparing generalisation across different dataset distributions. The strongest signal so far is that architectures that encode spatial structure perform more consistently under distribution shift.',
+  },
+  {
+    mod: 'next',
+    label: "What's Next",
+    text: 'Testing on egocentric video and exploring how depth estimates can act as auxiliary signals for downstream tasks. The open question is whether spatial priors can be learned efficiently without domain-specific pretraining.',
+  },
 ];
 
+function useReveal(ref) {
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          el.classList.add('visible');
+          obs.unobserve(el);
+        }
+      },
+      { threshold: 0.08 }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [ref]);
+}
+
 function Research() {
+  const ref = useRef(null);
+  useReveal(ref);
+
   return (
     <Box id="research" className="section" sx={{ background: '#FFFFFF' }}>
       <Container maxWidth="md" className="section-inner">
-        <Typography variant="h2" className="section-title">
-          Research
-        </Typography>
+        <h2 className="section-title">Research</h2>
 
-        <Typography sx={{ fontSize: '1.05rem', color: '#1F2937', mb: 4, lineHeight: 1.7 }}>
-          My current interest sits at the intersection of transformers and computer vision. I'm exploring how these models understand spatial structure, not just pixels. This is an ongoing learning path rather than finished research.
-        </Typography>
+        <div ref={ref} className="window research-window reveal">
+          <div className="window-header">
+            <span className="traffic-light close" />
+            <span className="traffic-light minimize" />
+            <span className="traffic-light maximize" />
+            <span className="window-title">spatial-reasoning.pdf</span>
+          </div>
 
-        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-          {focusAreas.map((area) => (
-            <Box
-              key={area.title}
-              className="fade-in"
-              sx={{
-                background: '#FCFCFC',
-                border: '1px solid #E5E7EB',
-                borderRadius: '10px',
-                p: 3,
-                transition: 'transform 0.25s ease, box-shadow 0.25s ease',
-                '&:hover': {
-                  transform: 'translateY(-2px)',
-                  boxShadow: '0 8px 24px rgba(31, 41, 55, 0.08)',
-                },
-              }}
-            >
-              <Typography
-                variant="h6"
-                sx={{
-                  fontFamily: "'IBM Plex Mono', monospace",
-                  fontSize: '1rem',
-                  fontWeight: 600,
-                  color: '#1F2937',
-                  mb: 0.5,
-                }}
-              >
-                {area.title}
-              </Typography>
-              <Typography sx={{ fontSize: '0.95rem', color: '#6B7280', lineHeight: 1.6 }}>
-                {area.desc}
-              </Typography>
-            </Box>
-          ))}
-        </Box>
+          <div className="window-body research-body">
+            <div className="research-paper-header">
+              <p className="research-paper-kicker">Research Note</p>
+              <h3 className="research-topic">Transformers & Spatial Understanding in Computer Vision</h3>
+              <p className="research-paper-meta">SegFormer • ZoeDepth • Ongoing exploration</p>
+            </div>
+
+            <div className="research-sections">
+              {researchSections.map((sec) => (
+                <div key={sec.mod} className={`case-block case-block--${sec.mod}`}>
+                  <span className="case-block-label">{sec.label}</span>
+                  <p className="case-block-text">{sec.text}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
       </Container>
     </Box>
   );

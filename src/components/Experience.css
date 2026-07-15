@@ -1,0 +1,100 @@
+/* Experience — Activity Monitor style system panel */
+
+.exp-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.exp-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.exp-summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+  padding-bottom: 16px;
+  margin-bottom: 18px;
+  border-bottom: 1px solid var(--border);
+}
+
+.exp-summary-main {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.exp-role {
+  font-family: var(--font-heading);
+  font-size: 1.02rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+}
+
+.exp-company {
+  font-family: var(--font-heading);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--accent);
+  letter-spacing: -0.01em;
+}
+
+.exp-summary-meta {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, max-content));
+  gap: 12px 16px;
+}
+
+.exp-meta-label {
+  display: block;
+  font-family: var(--font-heading);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin-bottom: 2px;
+}
+
+.exp-summary-meta p {
+  font-family: var(--font-body);
+  font-size: 0.84rem;
+  color: var(--text-primary);
+}
+
+.exp-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.exp-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.exp-section-label {
+  font-family: var(--font-heading);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.exp-tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+@media (max-width: 600px) {
+  .exp-summary { flex-direction: column; }
+  .exp-summary-meta { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}

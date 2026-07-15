@@ -1,128 +1,89 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
-import Typography from '@mui/material/Typography';
-import Grid from '@mui/material/Grid';
+import './Hero.css';
 
-const statusCards = [
-  { label: 'Building', value: 'Projects & experiments' },
-  { label: 'Learning', value: 'Cloud, CV, transformers' },
-  { label: 'Research', value: 'SegFormer & ZoeDepth' },
-  { label: 'Goal', value: 'Ship useful software' },
+const PROMPT_TEXT = '$ whoami';
+
+const statusItems = [
+  { key: 'building', label: 'building', value: 'Exercise Posture Correction System' },
+  { key: 'learning', label: 'learning', value: 'System Design' },
+  { key: 'research', label: 'researching', value: 'SegFormer + ZoeDepth' },
+  { key: 'solving', label: 'solving', value: 'DSA Trees & Graphs' },
+  { key: 'reading', label: 'reading', value: 'Computer Vision papers' },
 ];
 
 function Hero() {
+  const [typed, setTyped] = useState('');
+  const [done, setDone] = useState(false);
+  const [statusIndex, setStatusIndex] = useState(0);
+  const indexRef = useRef(0);
+
+  useEffect(() => {
+    const delay = setTimeout(() => {
+      const interval = setInterval(() => {
+        const next = indexRef.current + 1;
+        setTyped(PROMPT_TEXT.slice(0, next));
+        indexRef.current = next;
+        if (next >= PROMPT_TEXT.length) {
+          clearInterval(interval);
+          setDone(true);
+        }
+      }, 72);
+      return () => clearInterval(interval);
+    }, 400);
+    return () => clearTimeout(delay);
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setStatusIndex((current) => (current + 1) % statusItems.length);
+    }, 8000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const currentStatus = statusItems[statusIndex];
+
   return (
     <Box id="home" sx={{ pt: { xs: 6, md: 10 }, pb: { xs: 8, md: 12 }, background: '#F8F7F4' }}>
       <Container maxWidth="md">
-        <div className="window fade-in">
+        <div className="window fade-in window-open">
           <div className="window-header">
             <span className="traffic-light close" />
             <span className="traffic-light minimize" />
             <span className="traffic-light maximize" />
-            <span className="window-title">terminal</span>
+            <span className="window-title">terminal — joshika@portfolio</span>
           </div>
-          <div className="window-body" style={{ background: '#FCFCFC' }}>
-            <Typography
-              component="div"
-              sx={{
-                fontFamily: "'IBM Plex Mono', monospace",
-                fontSize: '0.85rem',
-                color: '#6B7280',
-                mb: 1.5,
-              }}
-            >
-              $ whoami<span className="cursor" />
-            </Typography>
+          <div className="window-body hero-terminal-body">
+            <p className="hero-prompt" aria-label="whoami command">
+              {typed}
+              <span className="cursor" aria-hidden="true" />
+            </p>
 
-            <Typography
-              variant="h1"
-              sx={{
-                fontFamily: "'IBM Plex Mono', monospace",
-                fontWeight: 700,
-                fontSize: { xs: '2rem', md: '2.75rem' },
-                color: '#1F2937',
-                mb: 1,
-              }}
-            >
-              Joshika Pachigulla
-            </Typography>
-
-            <Typography
-              sx={{
-                fontFamily: "'Inter', sans-serif",
-                fontSize: '1.05rem',
-                color: '#3B82F6',
-                fontWeight: 500,
-                mb: 0.5,
-              }}
-            >
-              Computer Science Engineering (AI/ML)
-            </Typography>
-
-            <Typography
-              sx={{
-                fontFamily: "'Inter', sans-serif",
-                fontSize: '0.95rem',
-                color: '#6B7280',
-                mb: 3,
-              }}
-            >
-              SRM University AP
-            </Typography>
-
-            <Typography
-              sx={{
-                fontFamily: "'Inter', sans-serif",
-                fontSize: { xs: '1rem', md: '1.15rem' },
-                color: '#1F2937',
-                lineHeight: 1.6,
-                maxWidth: '640px',
-              }}
-            >
-              I like building software that solves real problems — sometimes with AI, sometimes with cloud, and often by learning something new along the way.
-            </Typography>
+            {done && (
+              <>
+                <h1 className="hero-name">Joshika Pachigulla</h1>
+                <p className="hero-role">Computer Science Engineering (AI/ML)</p>
+                <p className="hero-school">SRM University AP</p>
+                <p className="hero-bio">
+                  I like building software that solves real problems — sometimes with AI, sometimes with cloud, and often by learning something new along the way.
+                </p>
+              </>
+            )}
           </div>
         </div>
 
-        <Grid container spacing={2} sx={{ mt: 4 }}>
-          {statusCards.map((card) => (
-            <Grid size={{ xs: 6, md: 3 }} key={card.label}>
-              <Box
-                className="fade-in"
-                sx={{
-                  background: '#FFFFFF',
-                  border: '1px solid #E5E7EB',
-                  borderRadius: '10px',
-                  p: 2,
-                  boxShadow: '0 1px 2px rgba(31, 41, 55, 0.04)',
-                  transition: 'transform 0.25s ease, box-shadow 0.25s ease',
-                  '&:hover': {
-                    transform: 'translateY(-3px)',
-                    boxShadow: '0 8px 24px rgba(31, 41, 55, 0.10)',
-                  },
-                }}
-              >
-                <Typography
-                  sx={{
-                    fontFamily: "'IBM Plex Mono', monospace",
-                    fontSize: '0.75rem',
-                    fontWeight: 600,
-                    color: '#6B7280',
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.04em',
-                    mb: 0.5,
-                  }}
-                >
-                  {card.label}
-                </Typography>
-                <Typography sx={{ fontFamily: "'Inter', sans-serif", fontSize: '0.95rem', color: '#1F2937' }}>
-                  {card.value}
-                </Typography>
-              </Box>
-            </Grid>
-          ))}
-        </Grid>
+        <div className="hero-status-strip fade-in">
+          <div className="hero-status-prompt">$ status --watch</div>
+          <div className="hero-status-inner">
+            <div key={currentStatus.key} className="hero-status-line">
+              <span className="hero-status-prefix">⚡ currently</span>
+              <span className="hero-status-label">{currentStatus.label}</span>
+              <span className="hero-status-colon">:</span>
+              <span className="hero-status-value">{currentStatus.value}</span>
+            </div>
+          </div>
+        </div>
       </Container>
     </Box>
   );

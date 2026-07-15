@@ -1,0 +1,121 @@
+/* Journey — journal / chapter reading layout
+
+.chapter-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.chapter-block {
+  position: relative;
+  padding: 22px 0 28px;
+  border-bottom: 1px solid var(--border);
+}
+
+.chapter-block:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.chapter-number {
+  display: block;
+  font-family: var(--font-heading);
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: rgba(31, 41, 55, 0.1);
+  line-height: 0.9;
+  margin-bottom: 10px;
+  letter-spacing: -0.03em;
+}
+
+.chapter-title {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+  margin-bottom: 12px;
+}
+
+.chapter-body {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.chapter-body p {
+  font-family: var(--font-body);
+  font-size: 0.96rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  letter-spacing: -0.01em;
+  max-width: 50rem;
+}
+
+.chapter-divider {
+  display: none;
+}
+
+@media (max-width: 680px) {
+  .chapter-number { font-size: 2rem; }
+  .chapter-body p { font-size: 0.92rem; }
+} */
+
+/* Journey — journal / chapter reading layout */
+
+.chapter-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.chapter-block {
+  position: relative;
+  padding: 22px 0 28px;
+  border-bottom: 1px solid var(--border);
+}
+
+.chapter-block:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.chapter-number {
+  display: block;
+  font-family: var(--font-heading);
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: rgba(31, 41, 55, 0.1);
+  line-height: 0.9;
+  margin-bottom: 10px;
+  letter-spacing: -0.03em;
+}
+
+.chapter-title {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+  margin-bottom: 12px;
+}
+
+.chapter-body {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.chapter-body p {
+  font-family: var(--font-body);
+  font-size: 0.96rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  letter-spacing: -0.01em;
+  max-width: 50rem;
+}
+
+@media (max-width: 680px) {
+  .chapter-number { font-size: 2rem; }
+  .chapter-body p { font-size: 0.92rem; }
+}

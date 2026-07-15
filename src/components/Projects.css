@@ -1,0 +1,183 @@
+/* Projects — Finder windows with case study sections */
+
+.projects-list {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.project-window-header {
+  gap: 8px;
+  padding-right: 12px;
+}
+
+.project-window-title {
+  font-family: var(--font-heading);
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  flex: 1;
+  margin-left: 4px;
+}
+
+.project-window-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.project-action-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--font-heading);
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  text-decoration: none;
+  padding: 3px 8px;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  background: var(--card);
+  transition: color 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+}
+
+.project-action-link:hover {
+  color: var(--text-primary);
+  border-color: var(--border-strong);
+  background: var(--bg);
+  text-decoration: none;
+}
+
+.project-action-link--demo { color: var(--accent); border-color: rgba(59, 130, 246, 0.3); }
+.project-action-link--demo:hover { color: var(--accent); border-color: var(--accent); }
+
+.project-window-body {
+  padding: 24px 24px 28px;
+}
+
+.project-hero {
+  padding-bottom: 18px;
+  margin-bottom: 18px;
+  border-bottom: 1px solid var(--border);
+}
+
+.project-eyebrow {
+  font-family: var(--font-heading);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin-bottom: 6px;
+}
+
+.project-name {
+  font-family: var(--font-heading);
+  font-size: 1.12rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+  margin-bottom: 10px;
+}
+
+.project-summary {
+  font-family: var(--font-body);
+  font-size: 0.92rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  letter-spacing: -0.01em;
+  max-width: 34rem;
+}
+
+.project-stack-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px 12px;
+  padding-bottom: 20px;
+  margin-bottom: 22px;
+  border-bottom: 1px solid var(--border);
+}
+
+.project-meta-label {
+  font-family: var(--font-heading);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  flex-shrink: 0;
+}
+
+.project-stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.project-case-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.case-block {
+  padding: 2px 0 2px 16px;
+  border-left: 3px solid transparent;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.case-block-head {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.case-block-number {
+  font-family: var(--font-heading);
+  font-size: 0.66rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  letter-spacing: 0.02em;
+}
+
+.case-block-label {
+  font-family: var(--font-heading);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.case-block-text {
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  letter-spacing: -0.005em;
+}
+
+.case-block--challenge { border-left-color: var(--accent-red); }
+.case-block--challenge .case-block-label { color: var(--accent-red); }
+.case-block--solution { border-left-color: var(--accent-orange); }
+.case-block--solution .case-block-label { color: var(--accent-orange); }
+.case-block--impact { border-left-color: var(--accent-green); }
+.case-block--impact .case-block-label { color: var(--accent-green); }
+.case-block--lessons { border-left-color: var(--accent-blue); }
+.case-block--lessons .case-block-label { color: var(--accent-blue); }
+.case-block--next { border-left-color: var(--accent-purple); }
+.case-block--next .case-block-label { color: var(--accent-purple); }
+
+@media (max-width: 720px) {
+  .project-hero, .project-meta { flex-direction: column; }
+  .project-summary { max-width: none; }
+}
+
+@media (max-width: 520px) {
+  .project-action-link span { display: none; }
+  .project-window-title { max-width: 120px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .project-window-body { padding: 18px 16px 22px; }
+}

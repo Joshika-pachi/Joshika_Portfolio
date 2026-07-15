@@ -1,0 +1,139 @@
+/* Contact — Mail compose window */
+
+.contact-body { padding: 0; }
+
+.mail-field {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 11px 20px;
+  border-bottom: 1px solid var(--border);
+}
+
+.mail-field--message { flex-direction: column; gap: 8px; padding-bottom: 16px; }
+.mail-field--to { background: var(--terminal-bg); }
+
+.mail-field-label {
+  font-family: var(--font-heading);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  min-width: 54px;
+  padding-top: 2px;
+  flex-shrink: 0;
+}
+
+.mail-field-to-value {
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.mail-form { display: flex; flex-direction: column; }
+
+.mail-input,
+.mail-textarea {
+  flex: 1;
+  width: 100%;
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  color: var(--text-primary);
+  background: transparent;
+  border: none;
+  outline: none;
+  resize: none;
+  padding: 2px 0;
+  line-height: 1.5;
+  transition: color 0.2s ease;
+}
+
+.mail-input::placeholder,
+.mail-textarea::placeholder { color: #C4C9D2; font-weight: 300; }
+.mail-input--error { color: var(--accent-red); }
+
+.mail-error {
+  font-family: var(--font-heading);
+  font-size: 0.65rem;
+  color: var(--accent-red);
+  letter-spacing: -0.005em;
+  margin-top: 2px;
+}
+
+.mail-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  padding: 16px 20px 18px;
+  border-top: 1px solid var(--border);
+  background: var(--terminal-bg);
+}
+
+.mail-send-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--font-heading);
+  font-size: 0.825rem;
+  font-weight: 600;
+  color: #FFFFFF;
+  background: var(--text-primary);
+  border: none;
+  border-radius: 8px;
+  padding: 9px 20px;
+  cursor: pointer;
+  letter-spacing: -0.01em;
+  transition: background 0.2s ease, transform 0.15s ease, opacity 0.2s ease;
+}
+
+.mail-send-btn:hover:not(:disabled) { background: #374151; transform: translateY(-1px); }
+.mail-send-btn:disabled { opacity: 0.65; cursor: not-allowed; }
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.mail-spinner {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-top-color: #FFFFFF;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+.mail-status { font-family: var(--font-body); font-size: 0.825rem; line-height: 1.4; }
+.mail-status--success { color: var(--success); }
+.mail-status--error { color: var(--accent-red); }
+
+.contact-socials { display: flex; align-items: center; gap: 16px; margin-top: 28px; }
+.contact-social-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--font-heading);
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.contact-social-link:hover { color: var(--text-primary); text-decoration: none; }
+
+.contact-footer {
+  margin-top: 56px;
+  text-align: center;
+  font-family: var(--font-heading);
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  letter-spacing: -0.01em;
+}
+
+@media (max-width: 520px) {
+  .mail-field { padding: 10px 14px; }
+  .mail-actions { padding: 14px 14px 16px; flex-direction: column; align-items: flex-start; gap: 10px; }
+  .mail-field-label { min-width: 48px; }
+}

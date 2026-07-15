@@ -1,0 +1,53 @@
+/* Skills — System Settings panel layout */
+
+.skills-panels {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.skills-panel {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px 16px 18px;
+  background: linear-gradient(180deg, #FFFFFF 0%, #FCFCFB 100%);
+  box-shadow: var(--shadow-sm);
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.skills-panel:hover {
+  border-color: var(--border-strong);
+  transform: translateY(-1px);
+}
+
+.skills-panel-label {
+  display: block;
+  font-family: var(--font-heading);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin-bottom: 10px;
+}
+
+.skills-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.skills-tag {
+  font-size: 0.78rem;
+  padding: 4px 10px;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.skills-tag:hover {
+  background: var(--accent);
+  color: white;
+}
+
+@media (max-width: 680px) {
+  .skills-panels { grid-template-columns: 1fr; }
+}

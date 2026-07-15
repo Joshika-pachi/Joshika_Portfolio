@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
-import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
+import './Navbar.css';
 
 const navItems = [
   { label: 'Home', href: '#home' },
@@ -18,110 +18,114 @@ const navItems = [
   { label: 'Contact', href: '#contact' },
 ];
 
+const SCROLL_OFFSET = 88;
+
 function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [activeSection, setActiveSection] = useState('home');
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 16);
+      setScrolled(window.scrollY > 12);
     };
+
+    const sectionElements = navItems
+      .map((item) => document.getElementById(item.href.slice(1)))
+      .filter(Boolean);
+
+    const ratios = new Map();
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          ratios.set(entry.target.id, entry.intersectionRatio);
+        });
+
+        const visible = navItems
+          .map((item) => item.href.slice(1))
+          .filter((id) => (ratios.get(id) ?? 0) > 0)
+          .sort((a, b) => (ratios.get(b) ?? 0) - (ratios.get(a) ?? 0));
+
+        if (visible.length > 0) {
+          setActiveSection(visible[0]);
+        }
+      },
+      {
+        rootMargin: `-${SCROLL_OFFSET}px 0px -55% 0px`,
+        threshold: [0, 0.15, 0.35, 0.55, 0.75, 1],
+      },
+    );
+
+    sectionElements.forEach((el) => observer.observe(el));
+
+    handleScroll();
     window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, []);
+
+  useEffect(() => {
+    document.body.style.overflow = mobileOpen ? 'hidden' : '';
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [mobileOpen]);
+
+  const isActive = (href) => activeSection === href.slice(1);
 
   return (
     <AppBar
       position="sticky"
       elevation={0}
-      sx={{
-        background: '#FFFFFF',
-        borderBottom: '1px solid #E5E7EB',
-        boxShadow: scrolled ? '0 4px 12px rgba(31, 41, 55, 0.06)' : 'none',
-        transition: 'box-shadow 0.25s ease',
-      }}
+      className={`navbar ${scrolled ? 'navbar--scrolled' : ''}`}
     >
-      <Toolbar sx={{ maxWidth: '960px', width: '100%', margin: '0 auto', px: { xs: 2, md: 3 } }}>
-        <Box
-          component="a"
-          href="#home"
-          sx={{
-            fontFamily: "'IBM Plex Mono', monospace",
-            fontWeight: 600,
-            color: '#1F2937',
-            textDecoration: 'none',
-            fontSize: '0.95rem',
-            letterSpacing: '-0.02em',
-            mr: 'auto',
-          }}
-        >
+      <Toolbar className="navbar-toolbar" disableGutters>
+        <a href="#home" className="navbar-logo">
           jp.
-        </Box>
+        </a>
 
-        <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 1 }}>
+        <nav className="navbar-links" aria-label="Primary">
           {navItems.map((item) => (
-            <Button
+            <a
               key={item.label}
               href={item.href}
-              sx={{
-                fontFamily: "'Inter', sans-serif",
-                textTransform: 'none',
-                color: '#6B7280',
-                fontSize: '0.85rem',
-                fontWeight: 500,
-                px: 1.5,
-                '&:hover': { color: '#1F2937', background: 'transparent' },
-              }}
+              className={`navbar-link ${isActive(item.href) ? 'navbar-link--active' : ''}`}
+              aria-current={isActive(item.href) ? 'page' : undefined}
             >
               {item.label}
-            </Button>
+            </a>
           ))}
-        </Box>
+        </nav>
 
         <Button
           onClick={() => setMobileOpen(!mobileOpen)}
-          sx={{
-            display: { xs: 'flex', md: 'none' },
-            minWidth: 'auto',
-            p: 1,
-            color: '#1F2937',
-          }}
+          className="navbar-menu-btn"
+          disableRipple
+          aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
+          aria-expanded={mobileOpen}
         >
-          {mobileOpen ? <CloseIcon /> : <MenuIcon />}
+          {mobileOpen ? <CloseIcon fontSize="small" /> : <MenuIcon fontSize="small" />}
         </Button>
       </Toolbar>
 
       {mobileOpen && (
-        <Box
-          sx={{
-            display: { xs: 'flex', md: 'none' },
-            flexDirection: 'column',
-            px: 2,
-            pb: 2,
-            borderTop: '1px solid #E5E7EB',
-            background: '#FFFFFF',
-          }}
-        >
+        <nav className="navbar-mobile" aria-label="Mobile">
           {navItems.map((item) => (
-            <Button
+            <a
               key={item.label}
               href={item.href}
               onClick={() => setMobileOpen(false)}
-              sx={{
-                justifyContent: 'flex-start',
-                fontFamily: "'Inter', sans-serif",
-                textTransform: 'none',
-                color: '#6B7280',
-                fontSize: '0.9rem',
-                fontWeight: 500,
-                py: 1.2,
-                '&:hover': { color: '#1F2937', background: 'transparent' },
-              }}
+              className={`navbar-mobile-link ${isActive(item.href) ? 'navbar-mobile-link--active' : ''}`}
+              aria-current={isActive(item.href) ? 'page' : undefined}
             >
               {item.label}
-            </Button>
+            </a>
           ))}
-        </Box>
+        </nav>
       )}
     </AppBar>
   );

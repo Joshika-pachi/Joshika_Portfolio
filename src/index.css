@@ -1,11 +1,15 @@
 /* Global reset and design tokens */
 
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
+
 :root {
   --bg: #F8F7F4;
+  --bg-alt: #FFFFFF;
   --card: #FFFFFF;
   --text-primary: #1F2937;
   --text-secondary: #6B7280;
   --border: #E5E7EB;
+  --border-strong: #D1D5DB;
   --accent: #3B82F6;
   --success: #3F8F68;
   --warm: #C77D36;
@@ -17,6 +21,13 @@
   --shadow-lg: 0 12px 32px rgba(31, 41, 55, 0.12);
   --font-heading: 'IBM Plex Mono', monospace;
   --font-body: 'Inter', sans-serif;
+
+  /* Case study border accents */
+  --accent-red: #EF4444;
+  --accent-orange: #F97316;
+  --accent-green: #22C55E;
+  --accent-blue: #3B82F6;
+  --accent-purple: #A855F7;
 }
 
 * {
@@ -93,6 +104,7 @@ a:hover {
   padding: 12px 16px;
   background: var(--terminal-bg);
   border-bottom: 1px solid var(--border);
+  user-select: none;
 }
 
 .traffic-light {
@@ -100,6 +112,7 @@ a:hover {
   height: 12px;
   border-radius: 50%;
   border: 1px solid rgba(0, 0, 0, 0.06);
+  flex-shrink: 0;
 }
 
 .traffic-light.close {
@@ -118,10 +131,18 @@ a:hover {
   font-family: var(--font-heading);
   font-size: 0.75rem;
   color: var(--text-secondary);
-  margin-left: 12px;
+  margin-left: 4px;
   flex: 1;
   text-align: center;
-  margin-right: 48px;
+}
+
+.window-title-left {
+  font-family: var(--font-heading);
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  margin-left: 4px;
+  flex: 1;
+  text-align: left;
 }
 
 .window-body {
@@ -139,7 +160,7 @@ a:hover {
   width: 8px;
   height: 1.1em;
   background: var(--accent);
-  margin-left: 4px;
+  margin-left: 2px;
   vertical-align: text-bottom;
   animation: blink 1s step-end infinite;
 }
@@ -160,18 +181,109 @@ a:hover {
   animation: fadeInUp 0.6s ease forwards;
 }
 
+/* Scroll-reveal */
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.55s ease, transform 0.55s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Window open animation */
+@keyframes windowOpen {
+  from {
+    opacity: 0;
+    transform: scale(0.97) translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.window-open {
+  animation: windowOpen 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+/* Case study section blocks */
+.case-block {
+  padding: 12px 14px 12px 16px;
+  border-left: 3px solid transparent;
+  margin-bottom: 16px;
+}
+
+.case-block:last-child {
+  margin-bottom: 0;
+}
+
+.case-block--challenge { border-left-color: var(--accent-red); }
+.case-block--solution  { border-left-color: var(--accent-orange); }
+.case-block--impact    { border-left-color: var(--accent-green); }
+.case-block--lessons   { border-left-color: var(--accent-blue); }
+.case-block--next      { border-left-color: var(--accent-purple); }
+
+.case-block-label {
+  font-family: var(--font-heading);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin-bottom: 5px;
+  display: block;
+}
+
+.case-block-text {
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  color: var(--text-primary);
+  line-height: 1.6;
+}
+
 /* Utility */
 .tag {
   display: inline-flex;
   align-items: center;
-  padding: 4px 10px;
+  padding: 3px 9px;
   border-radius: 999px;
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   font-family: var(--font-heading);
   font-weight: 500;
   background: var(--code);
   color: var(--text-secondary);
   border: 1px solid var(--border);
+  letter-spacing: -0.01em;
+}
+
+/* Bullet list */
+.bullet-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.bullet-list li {
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  color: var(--text-primary);
+  line-height: 1.55;
+  padding-left: 18px;
+  position: relative;
+}
+
+.bullet-list li::before {
+  content: '–';
+  position: absolute;
+  left: 0;
+  color: var(--text-secondary);
+  font-family: var(--font-heading);
 }
 
 /* Responsive */

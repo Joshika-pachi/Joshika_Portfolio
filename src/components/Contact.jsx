@@ -1,100 +1,186 @@
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Container from '@mui/material/Container';
-import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
-import EmailIcon from '@mui/icons-material/Email';
+import emailjs from '@emailjs/browser';
+import './Contact.css';
 
-const contacts = [
+const EMAILJS_SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID || 'demo-service';
+const EMAILJS_TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID || 'demo-template';
+const EMAILJS_PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY || 'demo-public';
+
+const socialLinks = [
   {
     label: 'GitHub',
-    href: 'https://github.com',
-    icon: <GitHubIcon />,
-    text: 'github.com/joshika',
+    href: 'https://github.com/joshika',
+    icon: <GitHubIcon sx={{ fontSize: 18 }} />,
   },
   {
     label: 'LinkedIn',
-    href: 'https://linkedin.com',
-    icon: <LinkedInIcon />,
-    text: 'linkedin.com/in/joshika',
-  },
-  {
-    label: 'Email',
-    href: 'mailto:hello@joshika.dev',
-    icon: <EmailIcon />,
-    text: 'hello@joshika.dev',
+    href: 'https://linkedin.com/in/joshika',
+    icon: <LinkedInIcon sx={{ fontSize: 18 }} />,
   },
 ];
 
+const EMPTY_FORM = { name: '', email: '', subject: '', message: '' };
+
+function validate(fields) {
+  const errors = {};
+  if (!fields.name.trim()) errors.name = 'Name is required.';
+  if (!fields.email.trim()) {
+    errors.email = 'Email is required.';
+  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(fields.email)) {
+    errors.email = 'Enter a valid email address.';
+  }
+  if (!fields.subject.trim()) errors.subject = 'Subject is required.';
+  if (!fields.message.trim()) errors.message = 'Message is required.';
+  return errors;
+}
+
+function useReveal(ref) {
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          el.classList.add('visible');
+          obs.unobserve(el);
+        }
+      },
+      { threshold: 0.08 }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [ref]);
+}
+
 function Contact() {
+  const [fields, setFields] = useState(EMPTY_FORM);
+  const [errors, setErrors] = useState({});
+  const [status, setStatus] = useState('idle');
+  const windowRef = useRef(null);
+  useReveal(windowRef);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFields((prev) => ({ ...prev, [name]: value }));
+    if (errors[name]) {
+      setErrors((prev) => ({ ...prev, [name]: undefined }));
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const errs = validate(fields);
+    if (Object.keys(errs).length > 0) {
+      setErrors(errs);
+      return;
+    }
+
+    setStatus('loading');
+    try {
+      if (EMAILJS_SERVICE_ID === 'demo-service' || EMAILJS_TEMPLATE_ID === 'demo-template' || EMAILJS_PUBLIC_KEY === 'demo-public') {
+        throw new Error('Email service not configured');
+      }
+
+      await emailjs.send(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
+        {
+          from_name: fields.name,
+          from_email: fields.email,
+          subject: fields.subject,
+          message: fields.message,
+        },
+        EMAILJS_PUBLIC_KEY,
+      );
+      setStatus('success');
+      setFields(EMPTY_FORM);
+    } catch {
+      setStatus('error');
+    }
+  };
+
   return (
     <Box id="contact" className="section" sx={{ background: '#FFFFFF', pb: { xs: 8, md: 12 } }}>
       <Container maxWidth="md" className="section-inner">
-        <Typography variant="h2" className="section-title">
-          Contact
-        </Typography>
+        <h2 className="section-title">Contact</h2>
 
-        <Typography sx={{ fontSize: '1.05rem', color: '#1F2937', mb: 4, lineHeight: 1.7 }}>
-          Currently debugging... probably something. If you'd like to talk about code, research, or a project, feel free to reach out.
-        </Typography>
+        <div ref={windowRef} className="window contact-window reveal">
+          <div className="window-header">
+            <span className="traffic-light close" />
+            <span className="traffic-light minimize" />
+            <span className="traffic-light maximize" />
+            <span className="window-title">New Message</span>
+          </div>
 
-        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-          {contacts.map((contact) => (
-            <Button
-              key={contact.label}
-              href={contact.href}
-              target={contact.label !== 'Email' ? '_blank' : undefined}
-              rel={contact.label !== 'Email' ? 'noopener noreferrer' : undefined}
-              className="fade-in"
-              sx={{
-                justifyContent: 'flex-start',
-                textTransform: 'none',
-                fontFamily: "'Inter', sans-serif",
-                fontSize: '1rem',
-                color: '#1F2937',
-                background: '#FCFCFC',
-                border: '1px solid #E5E7EB',
-                borderRadius: '10px',
-                p: 2,
-                gap: 2,
-                transition: 'transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease',
-                '&:hover': {
-                  transform: 'translateY(-2px)',
-                  boxShadow: '0 8px 24px rgba(31, 41, 55, 0.08)',
-                  borderColor: '#3B82F6',
-                  background: '#FCFCFC',
-                },
-              }}
-            >
-              <Box sx={{ color: '#3B82F6' }}>{contact.icon}</Box>
-              <Box sx={{ textAlign: 'left' }}>
-                <Typography
-                  sx={{
-                    fontFamily: "'IBM Plex Mono', monospace",
-                    fontSize: '0.75rem',
-                    fontWeight: 600,
-                    color: '#6B7280',
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.04em',
-                  }}
-                >
-                  {contact.label}
-                </Typography>
-                <Typography sx={{ color: '#1F2937', fontWeight: 500 }}>
-                  {contact.text}
-                </Typography>
-              </Box>
-            </Button>
+          <div className="window-body contact-body">
+            <div className="mail-field mail-field--to">
+              <span className="mail-field-label">To</span>
+              <span className="mail-field-to-value">pmsjacc@gmail.com</span>
+            </div>
+
+            <form onSubmit={handleSubmit} className="mail-form" noValidate>
+              <div className="mail-field">
+                <label className="mail-field-label" htmlFor="contact-name">From</label>
+                <input id="contact-name" name="name" type="text" className={`mail-input ${errors.name ? 'mail-input--error' : ''}`} placeholder="Your name" value={fields.name} onChange={handleChange} disabled={status === 'loading'} autoComplete="name" />
+                {errors.name && <span className="mail-error">{errors.name}</span>}
+              </div>
+
+              <div className="mail-field">
+                <label className="mail-field-label" htmlFor="contact-email">Email</label>
+                <input id="contact-email" name="email" type="email" className={`mail-input ${errors.email ? 'mail-input--error' : ''}`} placeholder="your@email.com" value={fields.email} onChange={handleChange} disabled={status === 'loading'} autoComplete="email" />
+                {errors.email && <span className="mail-error">{errors.email}</span>}
+              </div>
+
+              <div className="mail-field">
+                <label className="mail-field-label" htmlFor="contact-subject">Subject</label>
+                <input id="contact-subject" name="subject" type="text" className={`mail-input ${errors.subject ? 'mail-input--error' : ''}`} placeholder="What's this about?" value={fields.subject} onChange={handleChange} disabled={status === 'loading'} />
+                {errors.subject && <span className="mail-error">{errors.subject}</span>}
+              </div>
+
+              <div className="mail-field mail-field--message">
+                <label className="mail-field-label" htmlFor="contact-message">Message</label>
+                <textarea id="contact-message" name="message" className={`mail-textarea ${errors.message ? 'mail-input--error' : ''}`} placeholder="Hi Joshika, I wanted to reach out about..." rows={5} value={fields.message} onChange={handleChange} disabled={status === 'loading'} />
+                {errors.message && <span className="mail-error">{errors.message}</span>}
+              </div>
+
+              <div className="mail-actions">
+                <button type="submit" className="mail-send-btn" disabled={status === 'loading'} id="contact-send">
+                  {status === 'loading' ? (
+                    <>
+                      <span className="mail-spinner" aria-hidden="true" />
+                      Sending…
+                    </>
+                  ) : 'Send Message'}
+                </button>
+
+                {status === 'success' && (
+                  <span className="mail-status mail-status--success" role="alert">✓ Message sent. I’ll get back to you.</span>
+                )}
+                {status === 'error' && (
+                  <span className="mail-status mail-status--error" role="alert">Something went wrong. Try emailing directly at hello@joshika.dev.</span>
+                )}
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <div className="contact-socials">
+          {socialLinks.map((link) => (
+            <a key={link.label} href={link.href} target="_blank" rel="noopener noreferrer" className="contact-social-link">
+              {link.icon}
+              <span>{link.label}</span>
+            </a>
           ))}
-        </Box>
+        </div>
 
-        <Box sx={{ mt: 8, textAlign: 'center' }}>
-          <Typography sx={{ fontSize: '0.8rem', color: '#6B7280', fontFamily: "'IBM Plex Mono', monospace" }}>
-            Built with care, probably between debugging sessions.
-          </Typography>
-        </Box>
+        <div className="contact-footer">
+          <div>Built with care, probably between debugging sessions.</div>
+          <span>© {new Date().getFullYear()} Joshika Pachigulla. All rights reserved.</span>
+        </div>
       </Container>
     </Box>
   );

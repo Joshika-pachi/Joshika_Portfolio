@@ -1,78 +1,74 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import Container from '@mui/material/Container';
-import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
+import './Skills.css';
 
 const skillGroups = [
   {
-    title: 'Languages',
+    label: 'Languages',
     items: ['C++', 'Python', 'JavaScript', 'C'],
   },
   {
-    title: 'Technologies',
-    items: ['React.js', 'Redux', 'Git', 'GitHub', 'HTML', 'CSS', 'Figma'],
+    label: 'Frontend',
+    items: ['React.js', 'Redux', 'HTML', 'CSS', 'Material UI', 'Figma'],
   },
   {
-    title: 'Cloud',
-    items: ['AWS'],
+    label: 'Backend',
+    items: ['Node.js', 'PHP', 'REST APIs', 'Authentication'],
   },
   {
-    title: 'Database',
-    items: ['MySQL'],
+    label: 'Cloud',
+    items: ['AWS', 'Lambda', 'S3', 'CloudWatch', 'SNS'],
+  },
+  {
+    label: 'Databases',
+    items: ['MySQL', 'Firebase'],
+  },
+  {
+    label: 'Tools',
+    items: ['Git', 'GitHub', 'Jupyter', 'VS Code', 'Postman'],
   },
 ];
 
+function useReveal(ref) {
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          el.classList.add('visible');
+          obs.unobserve(el);
+        }
+      },
+      { threshold: 0.1 }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [ref]);
+}
+
 function Skills() {
+  const ref = useRef(null);
+  useReveal(ref);
+
   return (
     <Box id="skills" className="section" sx={{ background: '#FFFFFF' }}>
       <Container maxWidth="md" className="section-inner">
-        <Typography variant="h2" className="section-title">
-          Skills
-        </Typography>
+        <h2 className="section-title">$ cat skills.json</h2>
 
-        <Grid container spacing={3}>
+        <div ref={ref} className="skills-panels reveal">
           {skillGroups.map((group) => (
-            <Grid size={{ xs: 12, sm: 6 }} key={group.title}>
-              <Box
-                className="fade-in"
-                sx={{
-                  background: '#FCFCFC',
-                  border: '1px solid #E5E7EB',
-                  borderRadius: '10px',
-                  p: 3,
-                  height: '100%',
-                  transition: 'transform 0.25s ease, box-shadow 0.25s ease',
-                  '&:hover': {
-                    transform: 'translateY(-2px)',
-                    boxShadow: '0 8px 24px rgba(31, 41, 55, 0.08)',
-                  },
-                }}
-              >
-                <Typography
-                  sx={{
-                    fontFamily: "'IBM Plex Mono', monospace",
-                    fontSize: '0.75rem',
-                    fontWeight: 600,
-                    color: '#6B7280',
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.04em',
-                    mb: 1.5,
-                  }}
-                >
-                  {group.title}
-                </Typography>
-                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.8 }}>
-                  {group.items.map((item) => (
-                    <span key={item} className="tag">
-                      {item}
-                    </span>
-                  ))}
-                </Box>
-              </Box>
-            </Grid>
+            <div key={group.label} className="skills-panel">
+              <span className="skills-panel-label">{group.label}</span>
+              <div className="skills-chips">
+                {group.items.map((item) => (
+                  <span key={item} className="tag skills-tag">{item}</span>
+                ))}
+              </div>
+            </div>
           ))}
-        </Grid>
+        </div>
       </Container>
     </Box>
   );

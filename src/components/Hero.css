@@ -1,0 +1,248 @@
+/* Hero — terminal body + inline status strip
+
+.hero-terminal-body {
+  background: var(--terminal-bg);
+  padding: 28px 28px 36px;
+  min-height: 210px;
+}
+
+.hero-prompt {
+  font-family: var(--font-heading);
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  margin-bottom: 22px;
+  letter-spacing: -0.01em;
+  line-height: 1;
+}
+
+.hero-name {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: clamp(2rem, 5vw, 2.75rem);
+  color: var(--text-primary);
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  margin-bottom: 10px;
+}
+
+.hero-role {
+  font-family: var(--font-body);
+  font-size: 1.0625rem;
+  color: var(--accent);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  margin-bottom: 3px;
+}
+
+.hero-school {
+  font-family: var(--font-body);
+  font-size: 0.9375rem;
+  color: var(--text-secondary);
+  margin-bottom: 26px;
+}
+
+.hero-bio {
+  font-family: var(--font-body);
+  font-size: clamp(1rem, 2vw, 1.0625rem);
+  color: var(--text-primary);
+  line-height: 1.68;
+  max-width: 36rem;
+  letter-spacing: -0.01em;
+}
+
+.hero-status-strip {
+  margin-top: 12px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+
+.hero-status-prompt {
+  font-family: var(--font-heading);
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+  padding: 10px 20px 9px;
+  background: var(--terminal-bg);
+  border-bottom: 1px solid var(--border);
+  letter-spacing: -0.01em;
+}
+
+.hero-status-inner {
+  display: flex;
+  align-items: center;
+  min-height: 56px;
+  padding: 12px 18px;
+}
+
+.hero-status-line {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  font-family: var(--font-heading);
+  color: var(--text-primary);
+  min-height: 24px;
+}
+
+.hero-status-prefix {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+}
+
+.hero-status-label {
+  font-size: 0.76rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.hero-status-colon {
+  color: var(--text-secondary);
+}
+
+.hero-status-value {
+  font-size: 0.86rem;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+}
+
+@media (max-width: 768px) {
+  .hero-terminal-body { padding: 24px 20px 28px; }
+  .hero-status-inner { padding: 12px 16px; }
+}
+
+@media (max-width: 520px) {
+  .hero-status-inner { padding: 12px 14px; }
+  .hero-status-line { align-items: flex-start; flex-direction: column; gap: 2px; }
+} */
+
+
+/* Hero — terminal body + inline status strip */
+
+.hero-terminal-body {
+  background: var(--terminal-bg);
+  padding: 28px 28px 36px;
+  min-height: 210px;
+}
+
+.hero-prompt {
+  font-family: var(--font-heading);
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  margin-bottom: 22px;
+  letter-spacing: -0.01em;
+  line-height: 1;
+}
+
+.hero-name {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: clamp(2rem, 5vw, 2.75rem);
+  color: var(--text-primary);
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  margin-bottom: 10px;
+}
+
+.hero-role {
+  font-family: var(--font-body);
+  font-size: 1.0625rem;
+  color: var(--accent);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  margin-bottom: 3px;
+}
+
+.hero-school {
+  font-family: var(--font-body);
+  font-size: 0.9375rem;
+  color: var(--text-secondary);
+  margin-bottom: 26px;
+}
+
+.hero-bio {
+  font-family: var(--font-body);
+  font-size: clamp(1rem, 2vw, 1.0625rem);
+  color: var(--text-primary);
+  line-height: 1.68;
+  max-width: 36rem;
+  letter-spacing: -0.01em;
+}
+
+.hero-status-strip {
+  margin-top: 12px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+
+.hero-status-prompt {
+  font-family: var(--font-heading);
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+  padding: 10px 20px 9px;
+  background: var(--terminal-bg);
+  border-bottom: 1px solid var(--border);
+  letter-spacing: -0.01em;
+}
+
+.hero-status-inner {
+  display: flex;
+  align-items: center;
+  min-height: 56px;
+  padding: 12px 18px;
+}
+
+@keyframes statusFadeIn {
+  from { opacity: 0; transform: translateY(2px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.hero-status-line {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  font-family: var(--font-heading);
+  color: var(--text-primary);
+  min-height: 24px;
+  animation: statusFadeIn 0.4s ease;
+}
+
+.hero-status-prefix {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+}
+
+.hero-status-label {
+  font-size: 0.76rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.hero-status-colon {
+  color: var(--text-secondary);
+}
+
+.hero-status-value {
+  font-size: 0.86rem;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+}
+
+@media (max-width: 768px) {
+  .hero-terminal-body { padding: 24px 20px 28px; }
+  .hero-status-inner { padding: 12px 16px; }
+}
+
+@media (max-width: 520px) {
+  .hero-status-inner { padding: 12px 14px; }
+  .hero-status-line { align-items: flex-start; flex-direction: column; gap: 2px; }
+}
